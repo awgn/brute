@@ -1,0 +1,73 @@
+# 
+#  $Id: brute-conf,v 1.21 2008-05-19 19:47:07 awgn Exp $
+#
+#  brute script syntax:
+#
+#  label: statement token [+-]=val; token [+-]=val; ...
+# 
+#
+#  "label:"	unique string representing a line.
+#  "statement" 	command available; each command has a list of allowed tokens.
+#  "token"	identifier of the token.
+#  "val"	value assigned to the token; it can be either an integer, a public variable 
+#		or function.  
+#              
+
+
+# ::::::::::::::::::: dummy :::::::::::::::::::
+#
+#       dummy  msec=1000; integer=10; real=2; automatic=sum(500,500);
+# lab:  dummy  msec=1000; integer+=5; real-=1.5; automatic+=sum(100,100);
+#       loop counter=10; label=lab;
+
+
+# ::::::::::::::::::: cbr :::::::::::::::::::
+#
+
+cbr msec=5000; saddr=192.168.0.1; daddr=192.168.0.2; rate=10; len=64; dport=8; 
+
+#multicbr msec=5000; saddr=192.168.0.1; daddr=192.168.0.2; rate=1; len=64; dport=8; udp_flow=2;
+
+#lab:  cbr msec=5000; rate +=10;   
+#      loop counter=10; label=lab;
+
+
+# ::::::::::::::::::: cbr over ipv6 :::::::::::::::::::
+#
+#	cbr msec=1000; saddr=::1; daddr=3ffe:b00:c18:1::10; class=0x2; flow=0x0; hoplim=64; rate=1000; len=udp_data(10); dport=8;
+
+
+# ::::::::::::::::::: poisson :::::::::::::::::::  
+#
+#      poisson  msec=1000; saddr=192.168.0.1; daddr=192.168.0.2; lambda=10; len=64; dport=8;
+#lab:  poisson  msec=1000; lambda +=.5;
+#      loop counter=10; label=lab;
+
+
+# ::::::::::::::::::: pab: poisson arrival of burts :::::::::::::::::::
+#
+#      pab msec=10000; saddr=192.168.0.1; daddr=192.168.0.2; lambda=.3; alpha=1.8; theta=0.5; rate=1000; len=64; dport=8;
+
+
+# ::::::::::::::::::: rtcp: end-to-end delay :::::::::::::::::::
+#
+#      rtcp msec=10000; saddr=10.0.1.250; daddr=10.0.1.10; rate=1000; len=udp_data(50); dport=8;
+#
+
+
+# ::::::::::::::::::: rtcp_loop: round trip time measurement ::::::::::::::::::: 
+#
+#      rtcp_loop msec=2000; saddr=10.0.1.250; daddr=10.0.1.10; rate=100; len=udp_data(50); dport=8;
+#
+
+
+# ::::::::::::::::::: on-off source: cbr-off & off-exp :::::::::::::::::::
+#
+#  go:   cbr-exp lambda=5; saddr=192.168.0.1; daddr=192.168.0.2; rate=1000; len=udp_data(100); dport=8;
+#        off-exp lambda=10; 
+#        loop counter=10; label=go;
+
+# ::::::::::::::::::: trimodal :::::::::::::::::::
+#
+# trimodal msec=1000; saddr=192.168.0.1; daddr=192.168.0.2; rate=1000; len1=64; len2=594; len3=1518; p1=.5; p2=.2; p3=.3; dport=80;
+

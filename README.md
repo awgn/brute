@@ -1,3 +1,4 @@
+![alt text](https://github.com/awgn/brute/blob/master/logo/brute.jpg)
 # Welcome to Brute HomePage!
 
 ## What is BRUTE

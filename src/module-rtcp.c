@@ -316,7 +316,10 @@ static void
 u_engine(cycles_t *exit_time,cmdline_t *cmd)
 {
     cycles_t inter_time, ts;
-    rtcp_t *rtcp_sr, *rtcp_ss;
+    rtcp_t *rtcp_sr;
+#if 0
+    rtcp_t *rtcp_ss;
+#endif
 
     static frame_t *arena;
 
@@ -389,8 +392,10 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
     /*** SR: add the report header (RTCP packet, RFC3550) ***/
     rtcp_sr = (rtcp_t *)arena->udata;	/* allign rtcp header to udp-data */
+#if 0
     rtcp_ss = (rtcp_t *)\
               (buffer+sizeof(struct ethhdr)+sizeof(struct iphdr)+sizeof(struct udphdr));
+#endif
 
     rtcp_sr->common.version= 2;		/* rtcp version 2 */
     rtcp_sr->common.p=0;			/* don't padding */

@@ -97,7 +97,7 @@ struct atom par_parse_atom(const char *p);
 char *par_get_atom(char **s, char sep);
 char *par_get_command(char **s);
 char *par_get_label(char **p);
-int brute_eval_atom(struct atom *);
+long int brute_eval_atom(struct atom *);
 int brute_eval_int(struct atom *);
 double brute_eval_double(struct atom *);
 void *brute_eval_host(struct atom *);

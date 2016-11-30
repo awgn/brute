@@ -116,7 +116,7 @@ sa_fault (int sig, siginfo_t *si, void *scp)
 			break;
 	}
 
-#if #cpu (i386)
+#if defined (__i386__)
 	std("[i] Context:\n");
 	DUMP_REG(scp,REG_EAX);
 	DUMP_REG(scp,REG_ECX);

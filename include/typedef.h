@@ -33,7 +33,7 @@ union paret {
     long int         _long_int;
     double           _double;
     struct hostent * _host;
-    void *		     _addr;
+    void *	     _addr;
 };
 
 
@@ -41,9 +41,9 @@ union paret {
 struct atom {
 	char *lvalue;		/* l-value token */
 	char *rvalue;		/* r-value token */
-	int opcode;		    /* operator to be applied when evaluating rvalue */
-	int value;		    /* evaluated r-value to be considered
-				         * "static" at parser-time */
+	int opcode;		/* operator to be applied when evaluating rvalue */
+	int value;		/* evaluated r-value to be considered
+				 * "static" at parser-time */
 };
 
 /* user options */
@@ -71,7 +71,7 @@ struct options {
 	int urand;		    /* set seed by /dev/urand */
 	int pf_inet;		/* use pf_inet socket, instead of pf_packet */
 	int use_clock;		/* use the given clock at command line */
-    int non_int;        /* non interruptible (no kevent realtime evelation ) */
+	int non_int;		/* non interruptible (no kevent realtime evelation ) */
 };
 
 

@@ -327,6 +327,8 @@ struct hostent *h_dst;
 void
 brute_build_ip4(f, ihl, version, tos, len, id, frag_off, ttl, protocol, check, saddr, daddr)
 frame_t *f;
+int ihl;
+uint8_t version;
 uint8_t tos;
 uint16_t len;
 uint16_t id;

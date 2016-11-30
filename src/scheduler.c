@@ -71,11 +71,8 @@ pid_filter(const struct dirent *d)
     return 0;
 }
 
-static int pid_sort(const void *a, const void *b)
+static int pid_sort(const struct dirent **dir_a, const struct dirent **dir_b)
 {
-    struct dirent **dir_a = (struct dirent **)a;
-    struct dirent **dir_b = (struct dirent **)b;
-
     unsigned int a_pid = atoi((*dir_a)->d_name);
     unsigned int b_pid = atoi((*dir_b)->d_name);
 

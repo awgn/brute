@@ -764,9 +764,9 @@ brute_eval_host(struct atom *s)
  * It returns the integer value, if static, the address of the
  * r-value token otherwise.
  */
-int
+long int
 brute_eval_atom(struct atom *s)
 {
-    return ((s->opcode & OC_PTIME) ? s->value : (int)s->rvalue );
+    return ((s->opcode & OC_PTIME) ? s->value : (long int)s->rvalue );
 }
 

@@ -57,7 +57,7 @@
  * about NDEBUG macro
  */
 #define ASSERT(x)       \
-x ? : fatal("%s:%d :%s(): Assertion `%s' failed.",__FILE__,__LINE__,__FUNCTION__,#x);
+x ? 0 : fatal("%s:%d :%s(): Assertion `%s' failed.",__FILE__,__LINE__,__FUNCTION__,#x)
 
 
 /*
@@ -118,7 +118,16 @@ struct opaque_mod_line {
     unsigned long      opcode;
 } __attribute__((packed));
 
-#define opaque_stcarg(type, x)  *((type *)(((struct opaque_mod_line *)x)->data))
+
+#if 0
+#define opaque_stcarg(type, x)  (*((type *)(((struct opaque_mod_line *)x)->data)))
+#endif
+
+#define opaque_stcarg(type, x)  ({					\
+	typeof(type) y;							\
+	memcpy(&y, ((struct opaque_mod_line *)x)->data, sizeof(y));     \
+	y; })
+
 #define opaque_sizeof(x)        (((struct opaque_mod_line *)x)->size)
 #define opaque_opcode(x)        (((struct opaque_mod_line *)x)->opcode)
 
@@ -131,7 +140,7 @@ struct opaque_mod_line {
 
 #define OC_CLASS(x)     1<<(0 +x)
 #define OC_OPER(x)      1<<(8 +x)
-#define OC_TYPE(x)	    1<<(16+x)
+#define OC_TYPE(x)	1<<(16+x)
 
 /* class (8 bits) */
 #define OC_PTIME        (OC_CLASS(0))/* object to be evaluated at parser-time */
@@ -143,10 +152,10 @@ struct opaque_mod_line {
 #define OC_MNEQ         (OC_OPER(2)) /* -= */
 
 /* tyoe (8 bits) */
-#define OC_INT		    (OC_TYPE(0))
-#define OC_DOUBLE	    (OC_TYPE(1))
-#define OC_HOST		    (OC_TYPE(2))
-#define OC_ADDR		    (OC_TYPE(3))
+#define OC_INT		(OC_TYPE(0))
+#define OC_DOUBLE	(OC_TYPE(1))
+#define OC_HOST		(OC_TYPE(2))
+#define OC_ADDR		(OC_TYPE(3))
 
 /*
  * tags of the user-defined struct mod_line are DEFAULT_ALIGN bytes aligned

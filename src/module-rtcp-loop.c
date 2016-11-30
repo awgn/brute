@@ -309,7 +309,9 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     struct mod_line *p;
     rtcp_t *rtcp_sr, *rtcp_ss;
     struct iphdr *ips;
+#if 0
     struct udphdr *udps;
+#endif
 
     struct timeval opt_ts, recv_ts;
     struct sockaddr_ll addr_ll;
@@ -366,7 +368,11 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
     /*** incoming socket ***/
     ips = (struct iphdr *) (buffer+sizeof(struct ethhdr));
+
+#if 0
     udps = (struct udphdr *) (buffer+sizeof(struct ethhdr)+sizeof(struct iphdr));
+#endif
+
     rtcp_ss = (rtcp_t *)\
               (buffer+sizeof(struct ethhdr)+sizeof(struct iphdr)+sizeof(struct udphdr));
 

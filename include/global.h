@@ -1,10 +1,10 @@
 /*
     $Id: global.h,v 1.24 2008-01-12 16:10:19 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -64,7 +64,7 @@ EXTERN struct sockaddr_in6 sock6_out;
 
 /* options */
 EXTERN struct options opt INIT(={
-    rand_mac_dst:  0, 
+    rand_mac_dst:  0,
     rand_mac_src:  0,
 
     rand_host_src: -1,          /* netmask: n. of bit */
@@ -117,7 +117,7 @@ EXTERN void (*update_host) (frame_t *);
 
 EXTERN u_short (*in_chksum) (const u_short *, uint32_t );
 
-EXTERN int spec_rel[MAX_COMMAND][MAX_TOKEN]; 
+EXTERN int spec_rel[MAX_COMMAND][MAX_TOKEN];
 
 EXTERN TAILQ_HEAD(tqh,entry) head_commands, head_tokens;
 
@@ -133,7 +133,7 @@ EXTERN rtld_obj_t var_set[MAX_OBJ + 1];
 EXTERN int fun_index;
 EXTERN int var_index;
 
-EXTERN unsigned long init_rand_seed INIT(=0xcafebabe); 
+EXTERN unsigned long init_rand_seed INIT(=0xcafebabe);
 EXTERN int (*xprintf)(FILE *,const char *, ...);
 EXTERN ssize_t (*brute_sendto)(int , frame_t * , size_t , int );
 
@@ -151,5 +151,5 @@ EXTERN char hp_sep INIT(=':');
 EXTERN int  eth_p_ip INIT(=ETH_P_IP);
 
 #undef EXTERN
-#undef INIT 
+#undef INIT
 #endif /* GLOBAL_H */

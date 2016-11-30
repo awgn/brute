@@ -50,7 +50,7 @@ const char cvsid[]= "$Id: fnv.c,v 1.7 2008-01-12 16:10:21 awgn Exp $";
 #define FNV_prime 	16777619U
 #define offset_basis    2166136261U
 
-uint32_t 
+uint32_t
 hash(void *base, int s)
 {
 	uint32_t h = offset_basis;	/* FNV-1 hash */

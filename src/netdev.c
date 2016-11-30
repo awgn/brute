@@ -75,7 +75,7 @@ ethernet_info(const char *ifname)
     free(info);
 
     ifr.ifr_data = (__caddr_t) malloc(sizeof(struct ethtool_drvinfo));
-    info = (struct ethtool_drvinfo *) ifr.ifr_data; 
+    info = (struct ethtool_drvinfo *) ifr.ifr_data;
 
     if (ifr.ifr_data == NULL) {
         msg(MSG_INFO "malloc(): %s\n", strerror(errno));
@@ -92,8 +92,8 @@ ethernet_info(const char *ifname)
 }
 
 
-/* 
- *   The following functions are based on Donald Becker's "mii-diag" program. 
+/*
+ *   The following functions are based on Donald Becker's "mii-diag" program.
  *   mii-diag is written/copyright 1997-2000 by Donald Becker <becker@scyld.com>
  */
 
@@ -169,11 +169,11 @@ static const struct {
 };
 
 
-/* 
+/*
  * test link status using MII tool (when supported)
  */
 void
-mii_testlink(char *ifname) 
+mii_testlink(char *ifname)
 {
     static struct ifreq ifr;
     struct mii_data *mii= (void *)&ifr.ifr_data;
@@ -187,30 +187,30 @@ mii_testlink(char *ifname)
     strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
     if (ioctl(fd, SIOCGMIIPHY, &ifr) < 0) {
         msg (MSG_INFO "%s: device does not support MII tool\n",ifname);
-        goto mii_exit; 
+        goto mii_exit;
     }
 
     /* read 8 registers */
     for (i=0;i<8;i++) {
         mii->reg_num = i;
         if (ioctl(fd, SIOCGMIIREG, &ifr) < 0) {
-            msg (MSG_INFO "%s: device does not support MII tool\n",ifname); 
+            msg (MSG_INFO "%s: device does not support MII tool\n",ifname);
             break;
-        }	
+        }
         mii_reg[i]=mii->val_out;
         // msg (MSG_NULL "mii_reg[%d]=0x%x\n",i,mii_reg[i]);
     }
 
     /* check for autonegotiation */
-    if (!(mii_reg[mii_bmcr]  & MII_BMCR_AN_ENA )) 
-        goto an_disabled;	/* autonegotiation disabled */ 
+    if (!(mii_reg[mii_bmcr]  & MII_BMCR_AN_ENA ))
+        goto an_disabled;	/* autonegotiation disabled */
 
     /* autonegotiation complete? */
     if ( !(mii_reg[mii_bmsr] & MII_BMSR_AN_COMPLETE ))
         goto an_restarted;
 
     /* autonegotiation ok? */
-    if ( (mii_reg[mii_anar] & mii_reg[mii_anlpar]) == 0 ) 	
+    if ( (mii_reg[mii_anar] & mii_reg[mii_anlpar]) == 0 )
         goto an_failed;
 
     msg (MSG_INFO   "%s: ",ifname);
@@ -222,7 +222,7 @@ mii_testlink(char *ifname)
             break;
         }
     }
-    goto test_link;		
+    goto test_link;
 
 an_failed:
     msg (MSG_INFO   "%s: autonegotiation failed\n", ifname);
@@ -234,9 +234,9 @@ an_restarted:
 
 an_disabled:
     msg (MSG_INFO 	"%s: %s Mbit, %s duplex\n",
-         ifname,	
+         ifname,
          ( mii_reg[mii_bmcr] & MII_BMCR_100MBIT) ? "100" : "10" ,
-         ( mii_reg[mii_bmcr] & MII_BMCR_DUPLEX ) ? "full" : "half");			
+         ( mii_reg[mii_bmcr] & MII_BMCR_DUPLEX ) ? "full" : "half");
 
 test_link:
     if (!(mii_reg[mii_bmsr] & MII_BMSR_LINK_VALID )) {

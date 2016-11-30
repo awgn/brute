@@ -263,7 +263,7 @@ uninstall-sbinPROGRAMS:
 
 clean-sbinPROGRAMS:
 	-test -z "$(sbin_PROGRAMS)" || rm -f $(sbin_PROGRAMS)
-brute$(EXEEXT): $(brute_OBJECTS) $(brute_DEPENDENCIES) 
+brute$(EXEEXT): $(brute_OBJECTS) $(brute_DEPENDENCIES)
 	@rm -f brute$(EXEEXT)
 	$(LINK) $(brute_OBJECTS) $(brute_LDADD) $(LIBS)
 

@@ -1,9 +1,9 @@
 /*
     $Id: module-pab.c,v 1.14 2008-01-12 16:10:22 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -31,7 +31,7 @@ FUNCTION_ENGINE(u_engine);
 
 /* opaque space */
 struct mod_line {
-    uint32_t			AL(msec); 
+    uint32_t			AL(msec);
     uint32_t           	AL(rate);
     double			AL(lambda);
     double			AL(alpha);
@@ -39,8 +39,8 @@ struct mod_line {
     /* ipv4 */
     uint32_t			AL(len);
     uint32_t			AL(tos);
-    uint32_t			AL(ttl);  
-    /* ipv6 */ 
+    uint32_t			AL(ttl);
+    /* ipv6 */
     uint32_t                   AL(class);
     uint32_t                   AL(flow);
     uint32_t                   AL(hoplim);
@@ -48,23 +48,23 @@ struct mod_line {
     struct hostent *        AL(saddr);
     struct hostent *        AL(daddr);
     /* udp */
-    u_short			AL(sport); 
-    u_short 		AL(dport); 
+    u_short			AL(sport);
+    u_short 		AL(dport);
 };
 
 
 #define TOKEN_msec	0
 #define TOKEN_rate	1
-#define TOKEN_lambda	2	
-#define TOKEN_alpha   	3		
-#define TOKEN_theta	4 
-#define TOKEN_len	5	
+#define TOKEN_lambda	2
+#define TOKEN_alpha   	3
+#define TOKEN_theta	4
+#define TOKEN_len	5
 #define TOKEN_tos	6
-#define TOKEN_ttl	7	
-#define TOKEN_class    	8 
+#define TOKEN_ttl	7
+#define TOKEN_class    	8
 #define TOKEN_flow      9
 #define TOKEN_hoplim    10
-#define TOKEN_saddr	11	
+#define TOKEN_saddr	11
 #define TOKEN_sport  	12
 #define TOKEN_daddr	13
 #define TOKEN_dport  	14
@@ -77,12 +77,12 @@ static
 struct module_descriptor module = {
 h_engine:       u_engine,
                 h_parser:       u_parser,
-                command:        "pab",                 				
+                command:        "pab",
                 author:         "Bonelli Nicola <bonelli@netserv.iet.unipi.it>",
                 token_nelm:     15,
                 token_list:     { TOKEN(msec), TOKEN(rate),TOKEN(lambda),TOKEN(alpha),TOKEN(theta),
                     TOKEN(len),TOKEN(tos),TOKEN(ttl),TOKEN(class), TOKEN(flow), TOKEN(hoplim),
-                    TOKEN(saddr),TOKEN(sport),TOKEN(daddr),TOKEN(dport)}, 
+                    TOKEN(saddr),TOKEN(sport),TOKEN(daddr),TOKEN(dport)},
 };
 
 
@@ -107,7 +107,7 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
         TAG(rate)= cast_ret(brute_eval_atom,v);
         break;
     case TOKEN_lambda:
-        TAG(lambda)= cast_ret(brute_eval_double,v); 
+        TAG(lambda)= cast_ret(brute_eval_double,v);
         break;
     case TOKEN_alpha:
         TAG(alpha)= cast_ret(brute_eval_double,v);
@@ -153,7 +153,7 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
 
 /*** globals ***/
 struct entry {
-    cycles_t	timestamp; 
+    cycles_t	timestamp;
     TAILQ_ENTRY(entry) entries;     	/* Tail queue. */
 };
 
@@ -195,7 +195,7 @@ insert_tail(struct tailhead *head, struct entry *new)
                 fatal(__INTERNAL__);
         }
         xprintf(stdout,"\n");
-    }	
+    }
 #endif
 
 }
@@ -223,15 +223,15 @@ birth_event(double lambda, double alpha, double theta)
     N++;
 
     /* schedule the next birth */
-    next_birth.timestamp = now + (cycles_t)(Hz*exponential(lambda));	
+    next_birth.timestamp = now + (cycles_t)(Hz*exponential(lambda));
 
     /* schedule the death of the next burst */
-    new_death = malloc(sizeof(struct entry));	
+    new_death = malloc(sizeof(struct entry));
     new_death->timestamp = next_birth.timestamp + (cycles_t)(Hz*pareto(alpha,theta));
     //new_death->timestamp = next_birth.timestamp + (cycles_t)(Hz*3);
 
     /* queue new_death to the sorted death list */
-    insert_tail(&death_head,new_death);	
+    insert_tail(&death_head,new_death);
 }
 
 
@@ -249,7 +249,7 @@ death_event(double lambda, double alpha, double theta)
 
 
 /*** generic handler ***/
-static void (*event_handler)(double, double , double ); 
+static void (*event_handler)(double, double , double );
 
 
 /*** engine handler ***/
@@ -278,7 +278,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     /* alloc frame and set it up */
     arena = (frame_t *)brute_realloc_frame(arena);
 
-    brute_build_mac(arena,&global.ethh); 				// global ethernet option 
+    brute_build_mac(arena,&global.ethh); 				// global ethernet option
 
     brute_build_ip  (arena,                                         // frame pointer
                      p->len,                                       // frame length
@@ -299,7 +299,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
                     p->dport,					// destination port
                     p->len-sizeof(struct ethhdr)	\
                     -sizeof(struct iphdr)	\
-                    -sizeof(uint32_t),				// eth crc 
+                    -sizeof(uint32_t),				// eth crc
                     0);						// udp checksum not needed
 
     /*** compile the udp_data according to rfc2544 frame format ***/
@@ -314,7 +314,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     ASSERT(p->theta > 0);				/* pareto */
 
     /*** calc the correct number of bytes to pass to sendto() ***/
-    bytes = brute_framelen_to_bytes(p->len);	
+    bytes = brute_framelen_to_bytes(p->len);
 
     /*** start ***/
     global._start = global._sent;
@@ -329,8 +329,8 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
         event_handler(p->lambda,p->alpha,p->theta);
 
         /*** compute the next_event_time ***/
-        next_event_time = MIN(next_birth.timestamp, death_head.tqh_first->timestamp ); 
-        next_event_time = MIN(next_event_time, *exit_time);	
+        next_event_time = MIN(next_birth.timestamp, death_head.tqh_first->timestamp );
+        next_event_time = MIN(next_event_time, *exit_time);
 
         /*** update the next handler ***/
         event_handler = ( next_birth.timestamp < death_head.tqh_first->timestamp ?
@@ -346,7 +346,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
         if ( N == 0 ) {
             brute_wait_until(&next_event_time);
-            continue;	
+            continue;
         }
 
         /*** N > 0 ***/
@@ -370,7 +370,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
             /* increment ts */
             ts += inter_time;
 
-        }       
+        }
     }
 
     /*** print banner ***/

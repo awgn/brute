@@ -45,10 +45,10 @@ static
 struct module_descriptor module = {
 h_parser:       u_parser,
                 h_engine:       u_engine,
-                command:	"off",			
+                command:	"off",
                 author:         "Bonelli Nicola <bonelli@netserv.iet.unipi.it>",
                 token_nelm:     1,
-                token_list:	{TOKEN(msec)},	
+                token_list:	{TOKEN(msec)},
 };
 
 

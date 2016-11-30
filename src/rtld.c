@@ -83,7 +83,7 @@ register_obj(char *sym, void *addr, int type, enum symbol_type t)
 
 
 /*
- * given a symbol and the expected type, it returns its 
+ * given a symbol and the expected type, it returns its
  * address (NULL if not found).
  */
 void *
@@ -113,7 +113,7 @@ search_sym(char *sym, int *type, enum symbol_type t)
 }
 
 
-/* 
+/*
  * The update_mod_line() function updates the struct mod_line (dst)
  * with the struct mod_line (src), at run time.
  */
@@ -156,7 +156,7 @@ update_mod_line(void *src, void *dst, size_t n)
               opaque_opcode(s) & OC_TYPE_MASK);
 
         if ((opaque_opcode(s) & OC_CLASS_MASK) == 0)			        /* empty */
-            continue;  
+            continue;
 
         if ((opaque_opcode(s) & OC_CLASS_MASK) == OC_PTIME) {        /* static */
 
@@ -182,8 +182,8 @@ update_mod_line(void *src, void *dst, size_t n)
             struct atom a;
             u_int32_t dyn;
 
-            /* setup local atom */               
-            a.lvalue = NULL; 
+            /* setup local atom */
+            a.lvalue = NULL;
             a.rvalue = opaque_stcarg(char *,s);
             a.opcode = opaque_opcode(s);
             a.value  = 0;

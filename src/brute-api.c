@@ -84,12 +84,12 @@ _update_link(frame_t *f)
 void
 _update_host4(frame_t *f)
 {
-    uint32_t *ip; 
+    uint32_t *ip;
 
     if ( opt.rand_host_src >= 0 ) {
         ip  = (uint32_t *) &f->iph->saddr;
         *ip = (*ip & opt.mask_host_src) | (genrand_int32() & ~opt.mask_host_src);
-    } 
+    }
 
     if ( opt.rand_host_dst >= 0 ) {
         ip  = (uint32_t *) &f->iph->daddr;
@@ -123,21 +123,21 @@ _update_host6(frame_t *f)
         pip += bit/8;
 
         /* set the boundary random byte */
-        *pip = (*pip & bmask) | ( __getrand_uint8() & ~bmask);   
+        *pip = (*pip & bmask) | ( __getrand_uint8() & ~bmask);
 
         pip++;
 
         for ( i=bit/8+1; i < 16; i++) {
-            *pip++ = __getrand_uint8();	
+            *pip++ = __getrand_uint8();
         }
     }
 
     if ( opt.rand_host_src >=0 ) {
-        __randomize_ipv6(opt.rand_host_src, f->ip6h->ip6_src.s6_addr, opt.mask_host6_src); 
+        __randomize_ipv6(opt.rand_host_src, f->ip6h->ip6_src.s6_addr, opt.mask_host6_src);
     }
 
     if ( opt.rand_host_dst >=0 ) {
-        __randomize_ipv6(opt.rand_host_dst, f->ip6h->ip6_dst.s6_addr, opt.mask_host6_dst); 
+        __randomize_ipv6(opt.rand_host_dst, f->ip6h->ip6_dst.s6_addr, opt.mask_host6_dst);
     }
 
 }
@@ -170,7 +170,7 @@ _update_host6_eui64(frame_t *f)
 
 
 /* update-frame dispatcher */
-void 
+void
 brute_update_frame(frame_t *f)
 {
     /* update link layer */
@@ -283,33 +283,33 @@ struct hostent *h_dst;
                           5,                                            // ihl (20 bytes)
                           4,                                            // ipv4
                           tos,                                       	// tos
-                          len-sizeof(struct ethhdr)-sizeof(uint32_t),   // tot_len= framelen-sizeof(eth)-4                 
+                          len-sizeof(struct ethhdr)-sizeof(uint32_t),   // tot_len= framelen-sizeof(eth)-4
                           id,                         			// initial ip_id
                           IP_DF,                                        // see /usr/include/netinet/ip.h
 
-                          // IP_RF (reserved fragment flag) 
-                          // IP_DF (dont fragment flag) 
-                          // IP_MF (more fragments flag) 
+                          // IP_RF (reserved fragment flag)
+                          // IP_DF (dont fragment flag)
+                          // IP_MF (more fragments flag)
 
                           (ttl ? : 64),                              	// ttl
                           IPPROTO_UDP,                                  // see /usr/include/netinet/in.h
                           0,                                            // checksum: 0 -> compute the checksum
-                          &src_addr, 					// source ip 
-                          &dst_addr); 					// destination ip  
+                          &src_addr, 					// source ip
+                          &dst_addr); 					// destination ip
 
         break;
     case AF_INET6:
         memcpy((char *)&src6_addr.s6_addr, h_src->h_addr, h_src->h_length);
         memcpy((char *)&dst6_addr.s6_addr, h_dst->h_addr, h_dst->h_length);
 
-        brute_build_ip6(  f, 
-                          flow_label, 
-                          tclass, 
+        brute_build_ip6(  f,
+                          flow_label,
+                          tclass,
                           len-sizeof(struct ethhdr)-sizeof(struct ip6_hdr)-sizeof(uint32_t),
-                          IPPROTO_UDP, 
-                          hoplim ? : 64, 
-                          0, 
-                          &src6_addr, 
+                          IPPROTO_UDP,
+                          hoplim ? : 64,
+                          0,
+                          &src6_addr,
                           &dst6_addr);
 
         break;
@@ -353,7 +353,7 @@ struct in_addr *daddr;
     f->iph->ttl = ttl;
     f->iph->protocol = protocol;
     f->iph->check = check;
-    f->iph->saddr = saddr->s_addr;	
+    f->iph->saddr = saddr->s_addr;
     f->iph->daddr = daddr->s_addr;
 
     if (check == 0)
@@ -366,11 +366,11 @@ struct in_addr *daddr;
  */
 
 #define IP6_VER(x)		((x)<<4 )
-#define IP6_TCL(x)		((x & 0x0f) <<12 ) 
+#define IP6_TCL(x)		((x & 0x0f) <<12 )
 #define IP6_FID(x)		( htonl(x) )
 void
 brute_build_ip6(f,flow,tclass,plen,nxt,hlim,un2_vfc,src,dst)
-frame_t *f;	
+frame_t *f;
 uint32_t flow;
 uint32_t tclass;
 uint16_t plen;
@@ -383,13 +383,13 @@ struct in6_addr *dst;
     if (plen < 8 || plen > 1460)
         fatal("%s(): ipv6 plen=%d error. Bad lenght", __FUNCTION__, plen);
 
-    f->ip6h->ip6_flow = ( IP6_VER(6) | IP6_TCL(tclass) | IP6_FID(flow) ); 
+    f->ip6h->ip6_flow = ( IP6_VER(6) | IP6_TCL(tclass) | IP6_FID(flow) );
     f->ip6h->ip6_plen = htons(plen);
     f->ip6h->ip6_nxt  = nxt;
     f->ip6h->ip6_hlim = hlim;
 
-    memcpy(&f->ip6h->ip6_src,&src->s6_addr, sizeof(struct in6_addr));    
-    memcpy(&f->ip6h->ip6_dst,&dst->s6_addr, sizeof(struct in6_addr)); 
+    memcpy(&f->ip6h->ip6_src,&src->s6_addr, sizeof(struct in6_addr));
+    memcpy(&f->ip6h->ip6_dst,&dst->s6_addr, sizeof(struct in6_addr));
 
 }
 
@@ -540,7 +540,7 @@ brute_framelen_to_bytes(int i)
 }
 
 /*
- * given the hostname, it returns a hostent structure 
+ * given the hostname, it returns a hostent structure
  */
 struct hostent *
 brute_gethostbyname(const char *s)
@@ -591,18 +591,18 @@ brute_sendto_pf_inet(int s, frame_t * f, size_t len, int flags)
 {
     switch(af_family) {
     case AF_INET:
-        return sendto(  s, 
-                        f->iph,                          
-                        len-opt.ether_off,                
-                        flags, 
-                        (struct sockaddr *) &sock_out, 
+        return sendto(  s,
+                        f->iph,
+                        len-opt.ether_off,
+                        flags,
+                        (struct sockaddr *) &sock_out,
                         sizeof(struct sockaddr)) ;
     case AF_INET6:
-        return sendto(  s, 
-                        f->ip6h,                          
-                        len-opt.ether_off,                
-                        flags, 
-                        (struct sockaddr *) &sock6_out, 
+        return sendto(  s,
+                        f->ip6h,
+                        len-opt.ether_off,
+                        flags,
+                        (struct sockaddr *) &sock6_out,
                         sizeof(struct sockaddr_in6)) ;
         break;
     default:
@@ -616,11 +616,11 @@ brute_sendto_pf_inet(int s, frame_t * f, size_t len, int flags)
 ssize_t
 brute_sendto_pf_packet(int s, frame_t * f, size_t len, int flags)
 {
-    return sendto(	s, 
-                    f->data, 
-                    len, 
-                    flags, 
-                    (struct sockaddr *) &sock_ll_out, 
+    return sendto(	s,
+                    f->data,
+                    len,
+                    flags,
+                    (struct sockaddr *) &sock_ll_out,
                     sizeof(struct sockaddr_ll));
 }
 

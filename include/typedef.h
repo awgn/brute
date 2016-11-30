@@ -27,7 +27,7 @@
 #include <stdint.h>
 #include <timex.h>
 
-/* atom returned type */ 
+/* atom returned type */
 union paret {
     int              _int;
     long int         _long_int;
@@ -51,19 +51,19 @@ struct options {
 	int rand_mac_dst;	/* use random mac: RFC2544 */
 	int rand_mac_src;	/* use random mac: RFC2544 */
 
-	int rand_host_src;	/* netmask: n. of bit */	
+	int rand_host_src;	/* netmask: n. of bit */
 	int rand_host_dst;	/* netmask: n. of bit */
 
 	int mask_host_src;	/* network byte order mask */
 	int mask_host_dst;	/* network byte order mask */
 
-	char mask_host6_src;	/* network byte order mask: boundary byte */ 
-	char mask_host6_dst;	/* network byte order mask: boundary byte */ 
+	char mask_host6_src;	/* network byte order mask: boundary byte */
+	char mask_host6_dst;	/* network byte order mask: boundary byte */
 
 	int mac_src;		/* mac_src given, rand or missing */
 	int mac_dst;		/* mac_dst given, rand or missing */
 
-	int eui64;		    /* eui64 ipv6 stateless autoconf. */ 
+	int eui64;		    /* eui64 ipv6 stateless autoconf. */
 	int ether_off;		/* according to the socket type it can be either 0 or ETH_HLEN */
 	int verbose;		/* for future use */
 	int priority;		/* RR priority */
@@ -112,7 +112,7 @@ typedef struct {
 typedef struct {
 	struct ethhdr  *ethh;	/* ethernet header */
 	struct iphdr   *iph;	/* ip header */
-	struct ip6_hdr *ip6h;	/* ip6 header */ 
+	struct ip6_hdr *ip6h;	/* ip6 header */
 	struct udphdr  *udph;	/* upd header */
 	uint8_t *udata;		    /* upd data */
 	uint8_t *data;		    /* raw data: pointer to the frame */
@@ -247,7 +247,7 @@ enum eval_mode  {
     eval_rvalue_int    , 	/* only integers */
     eval_rvalue_double , 	/* only doubles */
     eval_rvalue_host   ,    /* evaluate as host */
-    eval_rvalue_addr   ,    /* evaluate as string */ 
+    eval_rvalue_addr   ,    /* evaluate as string */
     eval_rvalue_var    , 	/* TODO: only vars */
     eval_rvalue_func   , 	/* TODO: only functions */
 };

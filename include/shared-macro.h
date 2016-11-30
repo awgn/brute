@@ -1,10 +1,10 @@
 /*
     $Id: shared-macro.h,v 1.14 2008-01-12 16:10:19 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -23,13 +23,13 @@
 #ifndef SHARED_MACRO_H
 #define SHARED_MACRO_H
 
-/* 
- * fatal internal error 
+/*
+ * fatal internal error
  */
 #define __INTERNAL__    "%s:%d %s() :internal",__FILE__,__LINE__,__FUNCTION__
 
 /*
- * msg() macro 
+ * msg() macro
  */
 #define msg(format,...) fprintf(stderr, format, ## __VA_ARGS__)
 #define MSG_NULL        "    "
@@ -53,15 +53,15 @@
 #endif
 
 /*
- * like assert() exits if the argument passed is false, unlike assert() don't care 
- * about NDEBUG macro 
+ * like assert() exits if the argument passed is false, unlike assert() don't care
+ * about NDEBUG macro
  */
 #define ASSERT(x)       \
-x ? : fatal("%s:%d :%s(): Assertion `%s' failed.",__FILE__,__LINE__,__FUNCTION__,#x); 
+x ? : fatal("%s:%d :%s(): Assertion `%s' failed.",__FILE__,__LINE__,__FUNCTION__,#x);
 
 
-/* 
- * PUB_FUNCTION  macro 
+/*
+ * PUB_FUNCTION  macro
  */
 #define PUB_FUNCTION(s,args) \
 static void __reg_function_##s () __attribute__((constructor)); \
@@ -72,10 +72,10 @@ __reg_function_##s () \
 }
 
 
-/* 
- * PUB_VAR macro 
+/*
+ * PUB_VAR macro
  */
-#if __GNUC__ >= 3 && __GNUC_MINOR__ >= 2                                
+#if __GNUC__ >= 3 && __GNUC_MINOR__ >= 2
 #define PUB_VAR(s) \
 static void __reg_var_##s () __attribute__((constructor)); \
 static void \
@@ -97,8 +97,8 @@ __reg_var_##s () \
 }
 #endif
 
-/* 
- * useful macro to extract arguments from a vargs_t object 
+/*
+ * useful macro to extract arguments from a vargs_t object
  */
 #define args(vt,i) ({ \
     if (i>= vt->nmem) \
@@ -107,9 +107,9 @@ __reg_var_##s () \
 })
 
 
-/* According to the opaque struct mod_line, each tag is aligned to 32 byte word and 
- * followed by some parameters (stored in the adjacent words). Given the tag, 
- * the following macros retrieve the corrisponding parameters. 
+/* According to the opaque struct mod_line, each tag is aligned to 32 byte word and
+ * followed by some parameters (stored in the adjacent words). Given the tag,
+ * the following macros retrieve the corrisponding parameters.
  */
 
 struct opaque_mod_line {
@@ -122,8 +122,8 @@ struct opaque_mod_line {
 #define opaque_sizeof(x)        (((struct opaque_mod_line *)x)->size)
 #define opaque_opcode(x)        (((struct opaque_mod_line *)x)->opcode)
 
-/* 
- * opcode macros 
+/*
+ * opcode macros
  */
 #define OC_CLASS_MASK   0x000000ff
 #define OC_OPER_MASK    0x0000ff00
@@ -149,7 +149,7 @@ struct opaque_mod_line {
 #define OC_ADDR		    (OC_TYPE(3))
 
 /*
- * tags of the user-defined struct mod_line are DEFAULT_ALIGN bytes aligned 
+ * tags of the user-defined struct mod_line are DEFAULT_ALIGN bytes aligned
  */
 #define CEIL2(x) ( !((x-1)>>1) ? (1<<1)  :    \
                  ( !((x-1)>>2) ? (1<<2)  :    \
@@ -157,9 +157,9 @@ struct opaque_mod_line {
                  ( !((x-1)>>4) ? (1<<4)  :    \
                  ( !((x-1)>>5) ? (1<<5)  :    \
                  ( !((x-1)>>6) ? (1<<6)  :    \
-                 ( !((x-1)>>7) ? (1<<7)  : (1<<8) ))))))) 
+                 ( !((x-1)>>7) ? (1<<7)  : (1<<8) )))))))
 
-#define DEFAULT_ALIGN          CEIL2(sizeof(struct opaque_mod_line))      /* bytes */ 
+#define DEFAULT_ALIGN          CEIL2(sizeof(struct opaque_mod_line))      /* bytes */
 #define AL(x)  x __attribute__ ((aligned (DEFAULT_ALIGN)))
 
 
@@ -167,12 +167,12 @@ struct opaque_mod_line {
  * *** use with care ***
  *
  * crono_start() crono_end() macros. Dump on stderr the elapsed
- * time-stamp-counters between the two macro. 
+ * time-stamp-counters between the two macro.
  *
  */
 #define crono_start()	{ \
     unsigned long long c_start; \
-    c_start=get_cycles() 
+    c_start=get_cycles()
 
 #define crono_stop() \
     crono_vector[crono_index & crono_vector_mask]=get_cycles()-c_start; \

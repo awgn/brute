@@ -1,10 +1,10 @@
 /*
     $Id: fatal.c,v 1.4 2008-01-12 16:10:21 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or

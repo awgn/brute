@@ -96,7 +96,7 @@ sa_fault (int sig, siginfo_t *si, void *scp)
 	fprintf(stderr, "[i] Signal information:\n");
         INFO_INT(si,signo);
         INFO_INT(si,errno);
-	
+
 	switch (sig) {
 		case SIGILL:
 			INFO_ADDR(si,addr);
@@ -112,7 +112,7 @@ sa_fault (int sig, siginfo_t *si, void *scp)
 			break;
 		case SIGBUS:
 			INFO_ADDR(si,addr);
-			INFO_CODE(bus_code, si->si_code);	
+			INFO_CODE(bus_code, si->si_code);
 			break;
 	}
 
@@ -125,7 +125,7 @@ sa_fault (int sig, siginfo_t *si, void *scp)
 	DUMP_REG(scp,REG_ESP);
 	DUMP_REG(scp,REG_EBP);
 	DUMP_REG(scp,REG_ESI);
-	DUMP_REG(scp,REG_EDI); 
+	DUMP_REG(scp,REG_EDI);
 	DUMP_REG(scp,REG_EIP);
 	DUMP_REG(scp,REG_EFL);
 	DUMP_REG(scp,REG_CS);
@@ -136,10 +136,10 @@ sa_fault (int sig, siginfo_t *si, void *scp)
 	DUMP_REG(scp,REG_GS);
 #endif
 
-        std(format_module, 
+        std(format_module,
             modules[cmdline[global.ip].comm]->command ,
             modules[cmdline[global.ip].comm]->author );
-	
+
 	abort();
 
 }

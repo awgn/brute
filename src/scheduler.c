@@ -58,7 +58,7 @@ unset_realtime(int pid)
     sched_setscheduler(pid, SCHED_OTHER, &sp);
 }
 
-/* 
+/*
  * given a process/kernel thread name, it returns its pid or -1
  * if not found.
  */
@@ -123,9 +123,9 @@ next:
 
     free(line);
     // free filelist...
-    for(i=0; i<n; i++) 
+    for(i=0; i<n; i++)
         free(filelist[i]);
-    free(filelist); 
+    free(filelist);
     return pid;
 }
 

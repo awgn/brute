@@ -1,9 +1,9 @@
 /*
     $Id: module-rtcp-loop.c,v 1.19 2008-01-12 16:10:22 awgn Exp $
- 
+
     Copyright (c) 2004 Nicola Bonelli <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -37,11 +37,11 @@ FUNCTION_ENGINE(u_engine);
 
 /* opaque space */
 struct mod_line {
-    uint32_t		AL(msec); 
+    uint32_t		AL(msec);
     uint32_t		AL(rate);
     uint32_t		AL(len);
     uint32_t		AL(tos);
-    uint32_t		AL(ttl);  
+    uint32_t		AL(ttl);
     uint32_t		AL(stat);
     /* ipv6 */
     uint32_t                   AL(class);
@@ -51,8 +51,8 @@ struct mod_line {
     struct hostent *        AL(saddr);
     struct hostent *        AL(daddr);
     /* udp */
-    u_short		AL(sport); 
-    u_short 	AL(dport); 
+    u_short		AL(sport);
+    u_short 	AL(dport);
     double		AL(delay);	/* usec */
 };
 
@@ -62,19 +62,19 @@ struct mod_line {
 #define TOKEN_len	2
 #define TOKEN_tos	3
 #define TOKEN_ttl	4
-#define TOKEN_stat	5	
+#define TOKEN_stat	5
 
-#define TOKEN_class    	6 
+#define TOKEN_class    	6
 #define TOKEN_flow      7
 #define TOKEN_hoplim    8
 
-#define TOKEN_saddr	9	
-#define TOKEN_sport  	10	
-#define TOKEN_daddr	11	
-#define TOKEN_dport  	12	
+#define TOKEN_saddr	9
+#define TOKEN_sport  	10
+#define TOKEN_daddr	11
+#define TOKEN_dport  	12
 #define TOKEN_delay	13
 
-#define RETRIEVE_LIMIT	10000	/* max number of recvfrom() */	
+#define RETRIEVE_LIMIT	10000	/* max number of recvfrom() */
 #define RECOVERY_TIME	2000	/* msec */
 
 /*
@@ -84,12 +84,12 @@ static
 struct module_descriptor module = {
 h_engine:       u_engine,
                 h_parser:       u_parser,
-                command:        "rtcp_loop",                 				
-                author:		"Bonelli Nicola <bonelli@netserv.iet.unipi.it>",	
+                command:        "rtcp_loop",
+                author:		"Bonelli Nicola <bonelli@netserv.iet.unipi.it>",
                 token_nelm:     14,
                 token_list:     { TOKEN(msec), TOKEN(rate),TOKEN(len),TOKEN(tos),TOKEN(ttl),
                     TOKEN(class), TOKEN(flow), TOKEN(hoplim), TOKEN(stat),
-                    TOKEN(saddr),TOKEN(sport),TOKEN(daddr),TOKEN(dport), TOKEN(delay) }, 
+                    TOKEN(saddr),TOKEN(sport),TOKEN(daddr),TOKEN(dport), TOKEN(delay) },
 };
 
 
@@ -144,7 +144,7 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
         TAG(stat) = cast_ret(brute_eval_int,v);
         break;
     case TOKEN_delay:
-        TAG(delay)= cast_ret(brute_eval_double,v); 
+        TAG(delay)= cast_ret(brute_eval_double,v);
         break;
     default:
         PARSER_ERROR(v);
@@ -204,7 +204,7 @@ typedef struct {
     uint32_t count:5;     /* varies by packet type */
     uint32_t p:1;         /* padding flag */
     uint32_t version:2;   /* protocol version */
-#endif 
+#endif
     uint32_t pt:8;        /* RTCP packet type */
     uint32_t16 length;           /* pkt len in words, w/o this word */
 } rtcp_common_t;
@@ -319,7 +319,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
     long double sum=.0, sum2=.0, mean=.0, stddev=.0;
 
-    int sample, sample_tv_sec, sample_tv_usec;		
+    int sample, sample_tv_sec, sample_tv_usec;
 
     /* init the local engine handler, and the pointer addressing an hidden shared mod_line area */
     INIT_ENGINE(cmd,struct mod_line,p);
@@ -332,7 +332,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     /* alloc frame and set it up */
     arena = (frame_t *)brute_realloc_frame(arena);
 
-    brute_build_mac(arena,&global.ethh); 				// global ethernet option 
+    brute_build_mac(arena,&global.ethh); 				// global ethernet option
 
     brute_build_ip  (arena,                                         // frame pointer
                      p->len,                                      // frame length
@@ -353,7 +353,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
                     p->dport,					// destination port
                     p->len-sizeof(struct ethhdr)	\
                     -sizeof(struct iphdr)	\
-                    -sizeof(uint32_t),				// eth crc 
+                    -sizeof(uint32_t),				// eth crc
                     0);						// udp checksum not needed
 
     /*** build the udp_data according to rfc2544 frame format ***/
@@ -392,7 +392,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     signal_bsd(SIGALRM, abort_recvfrom);
 
     /*** calc the correct number of bytes to pass to sendto() ***/
-    bytes = brute_framelen_to_bytes(p->len);	
+    bytes = brute_framelen_to_bytes(p->len);
 
     /*** according to the rate requested, determine the interdeparture-time of packets.
       Both inter_time and HZ are expressed in time step counters (cycles_t) ***/
@@ -435,7 +435,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
         /* set alarm: 1 sec. */
         alarm (1);
         for (; (slen=recvfrom(  global.sin_fd, buffer, p->len, 0,
-                                (struct sockaddr *) &addr_ll, &so_len))!= -1 && RECV_RTCP()==0  ; ); 
+                                (struct sockaddr *) &addr_ll, &so_len))!= -1 && RECV_RTCP()==0  ; );
         alarm(0);
 
         /* rtcp lost in space ? */
@@ -482,15 +482,15 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
 start_gen:
 
-    /*** reset received packet counter ***/ 
+    /*** reset received packet counter ***/
     precv = 0;
 
     /*** reset exit_time ***/
-    *exit_time = (cycles_t)( get_cycles()+ Hz/1000 * p->msec); 
+    *exit_time = (cycles_t)( get_cycles()+ Hz/1000 * p->msec);
     stop_time = (cycles_t)( get_cycles()+ Hz/1000 * (p->msec+RECOVERY_TIME));
 
     /*** set nonblocking socket ***/
-    set_nonblock(global.sin_fd);	
+    set_nonblock(global.sin_fd);
 
     /*** send packets util the exit_time expires ***/
     for ( ts = get_cycles()+inter_time; get_cycles() < *exit_time; ) {
@@ -502,8 +502,8 @@ start_gen:
         rtcp_sr->r.sr.ntp_frac= htonl(opt_ts.tv_usec);
         rtcp_sr->r.sr.rtp_ts  = htonl(opt_ts.tv_usec);    /* gettimeofday() usec */
 
-        /* send rtcp packet */	
-        if( brute_sendto(global.sout_fd, arena, bytes, 0) == -1 ) 
+        /* send rtcp packet */
+        if( brute_sendto(global.sout_fd, arena, bytes, 0) == -1 )
             continue;
 
         /* increment the global counter */
@@ -519,14 +519,14 @@ RX:	rtest= 0;
         slen= recvfrom(global.sin_fd, buffer, p->len, 0,(struct sockaddr *) &addr_ll, &so_len);
         rtest++;
     }
-    while ((slen==-1 || RECV_RTCP()==0) && rtest < RETRIEVE_LIMIT );	
+    while ((slen==-1 || RECV_RTCP()==0) && rtest < RETRIEVE_LIMIT );
 
     if ( rtest == RETRIEVE_LIMIT ) {
         goto end;
     }
 
-    /* increment the packet received counter */		
-    precv++; 
+    /* increment the packet received counter */
+    precv++;
 
     /* retrive the current timestamp */
     ioctl(global.sin_fd, SIOCGSTAMP, &recv_ts);
@@ -538,14 +538,14 @@ RX:	rtest= 0;
             ntohl(rtcp_ss->r.sr.ntp_sec), ntohl(rtcp_ss->r.sr.ntp_frac),
             (int)recv_ts.tv_sec,(int)recv_ts.tv_usec,
             (int)ntohs(ips->id),
-            (long double)sample_tv_sec*1000000+(long double)sample_tv_usec-mean);	
+            (long double)sample_tv_sec*1000000+(long double)sample_tv_usec-mean);
 end:
     if ( get_cycles() >= *exit_time )
-        break;	
+        break;
 
     brute_wait_until(&ts), ts += inter_time;
 
-    }       
+    }
 
     /*** waiting for the most recent sent packet ***/
     if (get_cycles() < stop_time)
@@ -560,7 +560,7 @@ end:
     /*** print banner ***/
     {
         unsigned long long sent = global._sent-global._start;                    /* packet sent */
-        unsigned long long req  = (unsigned long long)p->rate*p->msec/1000;     /* packet to be sent */ 
+        unsigned long long req  = (unsigned long long)p->rate*p->msec/1000;     /* packet to be sent */
         unsigned long long arate= (unsigned long long)sent*1000/p->msec;        /* average rate */
         double jitter   = (double)sent/req*100-100;                             /* variation percentage */
         double lostp    = (double)(sent-precv)*100.0/sent;

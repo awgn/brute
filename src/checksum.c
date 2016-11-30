@@ -1,10 +1,10 @@
 /*
     $Id: checksum.c,v 1.11 2008-01-12 16:10:21 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -80,7 +80,7 @@ _hw_chksum(const u_short *addr, register u_int len)
 #if 0
 /*
  * fast checksum algorithm valid only for sequence of similar frames,
- * differing only in a 2 byte word (such as ip_id).  
+ * differing only in a 2 byte word (such as ip_id).
  */
 u_short
 _ft_chksum(const u_short *addr, register u_int len)
@@ -98,7 +98,7 @@ _ft_chksum(const u_short *addr, register u_int len)
        m'  - new value of a 16-bit field
 
 
-       HC' = ~(~HC + ~m + m')  
+       HC' = ~(~HC + ~m + m')
 
        register int sum;
 
@@ -106,15 +106,15 @@ _ft_chksum(const u_short *addr, register u_int len)
        sum  += ~(ip_id-1)        & 0xffff;
        sum  += ip_id;
        sum  = (sum >> 16) + (sum & 0xffff);     // (add hi 16 to low 16)
-       sum += (sum >> 16);                      // (add carry) 
+       sum += (sum >> 16);                      // (add carry)
        old_chksum  = htons((u_short)~sum);
 
        In this case, whereas only ip_id++ changes, we have:
 
-       .--- 0  : if m'=0xffff and m=0 
+       .--- 0  : if m'=0xffff and m=0
        (*) ~m+ m'= /
        \
-       `--- 1  : otherwise           
+       `--- 1  : otherwise
 
        (*) the sum is computed with 1's complement math.
 

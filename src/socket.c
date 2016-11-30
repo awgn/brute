@@ -82,7 +82,7 @@ iface_getid(int fd, const char *dev)
 
     ret = ifr.ifr_ifindex;
 
-    if (ioctl(fd, SIOCGIFFLAGS, &ifr) < 0) 
+    if (ioctl(fd, SIOCGIFFLAGS, &ifr) < 0)
         fatal("SIOCGIFFLAGS: %s", strerror(errno));
 
     if ((ifr.ifr_flags & IFF_UP) == 0)
@@ -93,8 +93,8 @@ iface_getid(int fd, const char *dev)
 
 
 
-/* 
- * dup_hostent - create hostent in one memory block (KAME/NETBSD) 
+/*
+ * dup_hostent - create hostent in one memory block (KAME/NETBSD)
  */
 
 struct hostent *dup_hostent(hp)
@@ -162,8 +162,8 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
     struct in6_addr in_addr6;
     int sock=-1, true=1, probe=-1;
 
-    /* 
-     * create PF_INET socket 
+    /*
+     * create PF_INET socket
      */
 
     if (opt.pf_inet) {
@@ -171,7 +171,7 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
         msg(MSG_INFO "packet routed to ->(%s)\n",dst_ip);
 
         switch(af_family) {
-        case PF_INET:	
+        case PF_INET:
             sock=socket(PF_INET,SOCK_RAW,IPPROTO_RAW);
             probe=socket(PF_INET,SOCK_STREAM,0);
 
@@ -181,7 +181,7 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
             if ( inet_pton(PF_INET,dst_ip,&in_addr4) <= 0 )
                 fatal("inet_pton() bad destination IPv4");
 
-            sock_out.sin_addr.s_addr = in_addr4.s_addr; 
+            sock_out.sin_addr.s_addr = in_addr4.s_addr;
             sock_out.sin_port = htons(1025);
             sock_out.sin_family = PF_INET;
 
@@ -208,7 +208,7 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
             sock6_out.sin6_port = htons(0);
             sock6_out.sin6_flowinfo = 0;
             sock6_out.sin6_scope_id = 0;
-            memcpy(&sock6_out.sin6_addr, in_addr6.s6_addr, sizeof(struct in6_addr)); 
+            memcpy(&sock6_out.sin6_addr, in_addr6.s6_addr, sizeof(struct in6_addr));
 
             if ( setsockopt(probe,SOL_SOCKET,SO_DONTROUTE,&true,sizeof(int)) == -1)
                 fatal("setsockopt(sock,SOL_SOCKET,SO_DONTROUTE,...)");
@@ -223,11 +223,11 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
             fatal("socket()");
 
         return sock;
-    }	
+    }
 
 
     /*
-     * create PF_PACKET incoming socket 
+     * create PF_PACKET incoming socket
      */
     if (mode == 0) {
 
@@ -248,15 +248,15 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
             fatal("socket bind() error");
 
 
-        /* put the interface in promis mode */		
+        /* put the interface in promis mode */
         iface_setprom(sock, ifname);
 
         return sock;
     }
 
 
-    /* 
-     * create PF_PACKET outgoing socket  
+    /*
+     * create PF_PACKET outgoing socket
      */
 
     sock=socket(PF_PACKET, SOCK_RAW, htons(eth_p_ip));
@@ -271,11 +271,11 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
     sock_ll_out.sll_ifindex  = iface_getid(sock, ifname);   /* Interface number */
 
     switch(opt.mac_src) {
-    case 0:	 
+    case 0:
         /* non specified */
         memcpy(global.ethh.h_source, iface_getmac(sock,ifname), ETH_ALEN);
         break;
-    case 1:	 
+    case 1:
         /* given */
         s_MAC = ether_aton(s_mac);
         if (s_MAC == NULL)
@@ -305,14 +305,14 @@ create_socket(char *ifname, char *s_mac, char *d_mac, int mode)
         *(addr++)= (uint32_t) genrand_int32();
         *(uint16_t *)addr= (uint16_t)(genrand_int32() & 0xffff);
         }
-    }	
+    }
 
     return sock;
 }
 
 
-/* 
- * set non blocking socket 
+/*
+ * set non blocking socket
  */
 void
 set_nonblock(sock)
@@ -325,8 +325,8 @@ int sock;
 }
 
 
-/* 
- * set blocking socket 
+/*
+ * set blocking socket
  */
 void
 set_block(sock)

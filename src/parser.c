@@ -75,7 +75,7 @@ remove_leading_set(char **s, char *set)
 /*
  * recursive evaluation of r-value tag
  */
-union paret 
+union paret
 par_eval_rvalue(char *s, enum eval_mode mode, int *_ret)
 {
     char *bf;
@@ -150,7 +150,7 @@ ret_b:
         return (union paret)(void *)strdup(bf);
 
     case eval_rvalue_host:
-        DEBUG("\t*** evaluate host ***\n");	
+        DEBUG("\t*** evaluate host ***\n");
         {
             struct hostent *h;
             h=brute_gethostbyname(bf);
@@ -162,9 +162,9 @@ ret_b:
     }
 
 
-    /* the following methods, eval_rvalue_static eval_rvalue_dynamic 
+    /* the following methods, eval_rvalue_static eval_rvalue_dynamic
      * and eval_rvalue_int are designed to evaluate int
-     * objects only (also vars and function returning integers). 
+     * objects only (also vars and function returning integers).
      */
 
     DEBUG("\t*** evaluate integer  ***\n");
@@ -180,7 +180,7 @@ ret_b:
     }
 
 
-    /*** 
+    /***
      *** stop recursing in case the method is not eval_rvalue_dynamic
      ***/
 
@@ -263,7 +263,7 @@ symb:
         ps = pe;
 
         for (i = 0; i < id; i++) {
-            DEBUG("\tpar_get_atom(): \"%s\"\n",ps);		
+            DEBUG("\tpar_get_atom(): \"%s\"\n",ps);
             if ((atom = par_get_atom(&ps, ',')) == NULL)
                 fatal("error: too few arguments to function `%s'", bf);
             DEBUG("\tATOM: \"%s\", %s\n", atom, ps);
@@ -286,7 +286,7 @@ symb:
 
 
 /*
- * given an atom parse it into the proper structure 
+ * given an atom parse it into the proper structure
  */
 struct atom
 par_parse_atom(const char *p)
@@ -322,7 +322,7 @@ par_parse_atom(const char *p)
                     eval_lespace, continue);
         case eval_lespace:
             state_$(isspace(tmp[i]),
-                    eval_lespace, tmp[i] = '\0'; break, 
+                    eval_lespace, tmp[i] = '\0'; break,
                     eval_plus_sep, continue);
         case eval_plus_sep:
             state_$(tmp[i] == '+',
@@ -523,16 +523,16 @@ no_label:
 }
 
 
-/* 
+/*
  * given the atom, it evaluates the r-value, only if static.
- * It also sets the opcode tag accordingly. (CLASS and OPERAND) 
+ * It also sets the opcode tag accordingly. (CLASS and OPERAND)
  * FIXME: the eval_rvalue_static method support only integers
  */
-union paret 
+union paret
 eval_atom_static(struct atom *s)
 {
     union paret r; 		/* value returned by eval_rvalue() */
-    int ret;			
+    int ret;
 
     memset(&r,0,sizeof(ret));
     r = par_eval_rvalue(s->rvalue,eval_rvalue_static, &ret);
@@ -559,7 +559,7 @@ eval_atom_static(struct atom *s)
 
 
 /*
- * given the atom, it evaluates the r-value tag. This function is called 
+ * given the atom, it evaluates the r-value tag. This function is called
  * by the used-defined u_engine, at run-time.
  */
 int
@@ -761,7 +761,7 @@ brute_eval_host(struct atom *s)
 
 /*
  * used by modules at parser-time to evaluate atoms.
- * It returns the integer value, if static, the address of the 
+ * It returns the integer value, if static, the address of the
  * r-value token otherwise.
  */
 int

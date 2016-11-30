@@ -29,7 +29,7 @@
  * f(x)= 1/(max-min)* rect ( (x-(max+min)/2)/(max-min) )
  */
 
-static inline double 
+static inline double
 uniform(double min, double max)
 {
     return (min+(genrand_real3())*(max-min));
@@ -40,7 +40,7 @@ uniform(double min, double max)
  *  f(x)= lambda* exp(-lambda*x)
  */
 
-static inline double 
+static inline double
 exponential(double lambda)
 {
     return(-1. / lambda * log(genrand_real3()));
@@ -51,23 +51,23 @@ exponential(double lambda)
  * f(x)= alpha/theta * ( theta/(x+theta) )^(alpha+1)
  */
 
-static inline double 
+static inline double
 pareto(double alpha, double theta)
 {
     return(theta*( pow(genrand_real3(),-1./alpha)-1.));
 }
 
 
-/* 
- * from probablib ... 
+/*
+ * from probablib ...
  */
 
-static inline double 
+static inline double
 normal(double esp,double var)
 {
     double u1 = genrand_real3();
     double u2 = genrand_real3();
-    double z  = sqrt(-2.0*log(u1))*cos(2*M_PI*u2); 
+    double z  = sqrt(-2.0*log(u1))*cos(2*M_PI*u2);
     return esp+var*z;
 }
 

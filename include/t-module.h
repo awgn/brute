@@ -1,10 +1,10 @@
 /*
     $Id: t-module.h,v 1.17 2008-01-12 16:10:19 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -52,7 +52,7 @@
 
 /* global definition */
 #include <global.h>
-/* new typedef and structures */ 
+/* new typedef and structures */
 #include <typedef.h>
 /* common macros */
 #include <shared-macro.h>
@@ -67,7 +67,7 @@
 
 #define MODULE_AUTHOR(x) \
 	static const char author[] __attribute__((unused)) = x
-	
+
 /*
  * prototype the user-defined handlers.
  */
@@ -103,7 +103,7 @@
 #define TAG(x) \
 	__current_tag = (void *)&__par_line->x; \
 	opaque_sizeof(__current_tag) = sizeof(__par_line->x); \
-	__par_line->x 	
+	__par_line->x
 
 #define cast_ret(fun, ...) \
 	fun(  __VA_ARGS__ ); \
@@ -113,22 +113,22 @@
                 opaque_opcode(__current_tag) &= ~OC_CLASS_MASK; \
                 opaque_opcode(__current_tag) |=  OC_PTIME; \
             }\
-	} while (0)	
-	
+	} while (0)
+
 /*
  * Initialize the module, registering handlers and lists
- */ 
+ */
 #define INIT_MODULE(x)\
 static void init_module() __attribute__((constructor));	\
 static void \
 init_module() \
 { \
         register_module(&(x)); \
-}							
+}
 
 
 /*
- * Initialize the u-parser handler, allocing the space for the 
+ * Initialize the u-parser handler, allocing the space for the
  * __par_line opaque structure.
  */
 #define INIT_PARSER(cmd,type,a) \
@@ -140,8 +140,8 @@ init_module() \
         	__par_line = calloc(1,sizeof(type)); \
        	 	cmd->opaque = (void *)__par_line; \
         	cmd->msec   = &(__par_line->msec); \
-	} 							
-	      							
+	}
+
 
 /*
  * Initialize the engine handler

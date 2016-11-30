@@ -22,7 +22,7 @@
 
 
 /*
-    most part of this header has been ripped from the timex.h of the 
+    most part of this header has been ripped from the timex.h of the
     linux kernel 2.4
  */
 
@@ -30,8 +30,8 @@
 #ifndef TIMEX_H
 #define TIMEX_H
 
-/*** 
- *** i586/686 architecture 
+/***
+ *** i586/686 architecture
  ***/
 #if defined (CONFIG_586) || defined (CONFIG_686)
 #define rdtscll(val) \
@@ -60,9 +60,9 @@ static inline cycles_t get_cycles (void)
         return ret;
 }
 
-/*** 
- *** hppa2.0-unknown-linux-gnu 
- ***/ 
+/***
+ *** hppa2.0-unknown-linux-gnu
+ ***/
 #elif defined (CONFIG_PA)
 #define mfctl(reg)      ({              \
         unsigned long cr;               \

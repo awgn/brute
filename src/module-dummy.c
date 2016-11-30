@@ -30,14 +30,14 @@ MODULE_AUTHOR("Bonelli Nicola <bonelli@antifork.org>");
 FUNCTION_PARSER(u_parser);
 FUNCTION_ENGINE(u_engine);
 
-/* 
+/*
  * Adding a new token to the "dummy" module:
  *
  * 1) add the "new" tag to the mod_line structure, choosing the preferred type.
  * 2) define the macro TOKEN_new assigning the first integer available.
  * 3) add the TOKEN(new) to the token_list tag of the module_descriptor.
- * 4) add the CASE(new_token) to the function devoted to parse the arguments of the command. 
- * 
+ * 4) add the CASE(new_token) to the function devoted to parse the arguments of the command.
+ *
  */
 
 
@@ -55,8 +55,8 @@ struct mod_line {
 #define TOKEN_msec	0
 #define TOKEN_integer	1
 #define TOKEN_automatic 2
-#define TOKEN_real	3		
-//#define TOKEN_new	4 ..					<-(2)	
+#define TOKEN_real	3
+//#define TOKEN_new	4 ..					<-(2)
 
 /*
  * module descriptor
@@ -65,10 +65,10 @@ static
 struct module_descriptor module = {
 h_parser:       u_parser,
                 h_engine:       u_engine,
-                command:	"dummy",			
+                command:	"dummy",
                 author:         "Bonelli Nicola <bonelli@netserv.iet.unipi.it>",
                 token_nelm:     4,
-                token_list:	{TOKEN(msec), TOKEN(integer), TOKEN(automatic),TOKEN(real)/*, TOKEN(new)*/},// 	<-(3)	
+                token_list:	{TOKEN(msec), TOKEN(integer), TOKEN(automatic),TOKEN(real)/*, TOKEN(new)*/},// 	<-(3)
 };
 
 
@@ -88,7 +88,7 @@ u_engine(cycles_t* exit_time,cmdline_t *cmd )
 
     BANNER("integer=%d automatic=%d real=%f\n",p->integer,p->automatic,p->real);
 
-    brute_wait_until(exit_time);		
+    brute_wait_until(exit_time);
 }
 
 

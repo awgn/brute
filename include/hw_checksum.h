@@ -1,10 +1,10 @@
 /*
     $Id: hw_checksum.h,v 1.3 2008-01-12 16:10:19 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -27,7 +27,7 @@
  * This list contains the ethernet adapters with the support
  * of IP hw_checksum
  */
- 
+
 char *hw_checksum_list[] = {
 	"8139cp",
 	"acenic"

@@ -1,9 +1,9 @@
 /*
     $Id: module-poisson.c,v 1.19 2008-01-12 16:10:22 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -63,10 +63,10 @@ struct mod_line {
 #define TOKEN_flow      6
 #define TOKEN_hoplim    7
 
-#define TOKEN_saddr     8       
-#define TOKEN_sport     9       
-#define TOKEN_daddr     10      
-#define TOKEN_dport     11      
+#define TOKEN_saddr     8
+#define TOKEN_sport     9
+#define TOKEN_daddr     10
+#define TOKEN_dport     11
 
 
 /*
@@ -101,7 +101,7 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
         TAG(msec)= cast_ret(brute_eval_int, v);
         break;
     case TOKEN_lambda:
-        TAG(lambda)= cast_ret(brute_eval_double,v); 
+        TAG(lambda)= cast_ret(brute_eval_double,v);
         break;
     case TOKEN_len:
         TAG(len)= cast_ret(brute_eval_atom,v);
@@ -161,7 +161,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     arena = (frame_t *)brute_realloc_frame(arena);
 
 
-    brute_build_mac(arena,&global.ethh); 				// global ethernet option 
+    brute_build_mac(arena,&global.ethh); 				// global ethernet option
 
     brute_build_ip  (arena,                                         // frame pointer
                      p->len,                                      // frame length
@@ -182,7 +182,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
                     p->dport,					// destination port
                     p->len-sizeof(struct ethhdr)	\
                     -sizeof(struct iphdr)	\
-                    -sizeof(uint32_t),				// eth crc 
+                    -sizeof(uint32_t),				// eth crc
                     0);						// udp checksum not needed
 
     /*** compile the udp_data according to rfc2544 frame format ***/
@@ -193,7 +193,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     ASSERT(p->lambda > 0);
 
     /*** calc the correct number of bytes to pass to sendto() ***/
-    bytes = brute_framelen_to_bytes(p->len);	
+    bytes = brute_framelen_to_bytes(p->len);
 
     /*** according to the lambda requested, determine the interdeparture-time of packets.
       Both inter_time and HZ are expressed in time step counters (cycles_t) ***/
@@ -227,7 +227,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
         /* increment ts */
         ts += inter_time;
 
-    }       
+    }
 
     /*** reenable paging ***/
     munlockall();

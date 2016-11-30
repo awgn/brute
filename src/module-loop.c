@@ -1,10 +1,10 @@
 /*
     $Id: module-loop.c,v 1.17 2008-01-12 16:10:22 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -44,18 +44,18 @@ struct mod_line {
 /* module descriptor */
 
 #define TOKEN_msec	0
-#define TOKEN_counter	1	
+#define TOKEN_counter	1
 #define TOKEN_start	2
-#define TOKEN_label	3		
+#define TOKEN_label	3
 
 static
 struct module_descriptor module = {
 h_parser:       u_parser,
                 h_engine:       u_engine,
-                command:  	"loop",                 			
+                command:  	"loop",
                 author:         "Bonelli Nicola <bonelli@netserv.iet.unipi.it>",
                 token_nelm:     4,
-                token_list:    	{ TOKEN(msec),TOKEN(counter), TOKEN(start), TOKEN(label) },    
+                token_list:    	{ TOKEN(msec),TOKEN(counter), TOKEN(start), TOKEN(label) },
 };
 
 
@@ -67,7 +67,7 @@ INIT_MODULE(module);
  */
 
 
-static 
+static
 void
 u_engine(cycles_t* exit_time, cmdline_t *cmd )
 {
@@ -77,11 +77,11 @@ u_engine(cycles_t* exit_time, cmdline_t *cmd )
     BANNER("->%s #%d",p->slabel,p->counter);
 
     if ( (i=find_label(p->slabel))==-1)
-        fatal("loop: error, label \"%s\" not found",p->slabel);	
+        fatal("loop: error, label \"%s\" not found",p->slabel);
 
     /* force the global ip */
 
-    if (--(p->counter)) 
+    if (--(p->counter))
         global.jmp = i;
 
     if ( p->counter ==0)
@@ -91,7 +91,7 @@ u_engine(cycles_t* exit_time, cmdline_t *cmd )
 }
 
 
-static 
+static
 void
 u_parser(int t, struct atom *v, cmdline_t *cmd )
 {

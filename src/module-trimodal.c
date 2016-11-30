@@ -1,10 +1,10 @@
 /*
     $Id: module-trimodal.c,v 1.3 2008-01-12 16:10:22 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -33,7 +33,7 @@ FUNCTION_ENGINE(u_engine);
 /* opaque space */
 struct mod_line {
 	/* ipv4 */
-	uint32_t			AL(msec); 
+	uint32_t			AL(msec);
 
 	uint32_t			AL(len1);
 	uint32_t			AL(len2);
@@ -46,7 +46,7 @@ struct mod_line {
 	uint32_t			AL(rate);
 
 	uint32_t			AL(tos);
-	uint32_t			AL(ttl);  
+	uint32_t			AL(ttl);
 	/* ipv6 */
 	uint32_t			AL(class);
   	uint32_t			AL(flow);
@@ -55,30 +55,30 @@ struct mod_line {
 	struct hostent *	AL(saddr);
 	struct hostent *	AL(daddr);
 	/* udp */
-	u_short			AL(sport); 
-	u_short 		AL(dport); 
+	u_short			AL(sport);
+	u_short 		AL(dport);
 };
 
 
 #define TOKEN_msec	0
 #define TOKEN_rate	1
 #define TOKEN_len1	2
-#define TOKEN_len2	3	
+#define TOKEN_len2	3
 #define TOKEN_len3	4
 #define TOKEN_p1	5
 #define TOKEN_p2	6
 #define TOKEN_p3	7
-#define TOKEN_tos	8	
-#define TOKEN_ttl	9	
+#define TOKEN_tos	8
+#define TOKEN_ttl	9
 
-#define TOKEN_class	10	
-#define TOKEN_flow	11	
-#define TOKEN_hoplim	12	
+#define TOKEN_class	10
+#define TOKEN_flow	11
+#define TOKEN_hoplim	12
 
-#define TOKEN_saddr	13	
-#define TOKEN_sport  	14	
-#define TOKEN_daddr	15	
-#define TOKEN_dport  	16	
+#define TOKEN_saddr	13
+#define TOKEN_sport  	14
+#define TOKEN_daddr	15
+#define TOKEN_dport  	16
 
 
 /*
@@ -88,13 +88,13 @@ static
 struct module_descriptor module = {
         h_engine:       u_engine,
         h_parser:       u_parser,
-        command:        "trimodal",                 				
+        command:        "trimodal",
 	author:         "Bonelli Nicola <nbonelli@mbigroup.it>",
 	token_nelm:     17,
         token_list:     { TOKEN(msec), TOKEN(rate),TOKEN(len1),TOKEN(len2), TOKEN(len3),
 			  TOKEN(p1), TOKEN(p2), TOKEN(p3),TOKEN(tos),TOKEN(ttl),
 			  TOKEN(class), TOKEN(flow), TOKEN(hoplim),TOKEN(saddr),TOKEN(sport),
-			  TOKEN(daddr),TOKEN(dport)}, 
+			  TOKEN(daddr),TOKEN(dport)},
         };
 
 
@@ -108,22 +108,22 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
 {
 
 	INIT_PARSER(cmd,struct mod_line,v);
-	
+
         switch (t) {
 	case TOKEN_msec:
-		TAG(msec)= cast_ret(brute_eval_int, v); 
+		TAG(msec)= cast_ret(brute_eval_int, v);
 		break;
 	case TOKEN_rate:
-		TAG(rate)= cast_ret(brute_eval_atom,v); 
+		TAG(rate)= cast_ret(brute_eval_atom,v);
 		break;
 	case TOKEN_len1:
-		TAG(len1)= cast_ret(brute_eval_atom,v); 
+		TAG(len1)= cast_ret(brute_eval_atom,v);
 		break;
 	case TOKEN_len2:
-		TAG(len2)= cast_ret(brute_eval_atom,v); 
+		TAG(len2)= cast_ret(brute_eval_atom,v);
 		break;
 	case TOKEN_len3:
-		TAG(len3)= cast_ret(brute_eval_atom,v); 
+		TAG(len3)= cast_ret(brute_eval_atom,v);
 		break;
 	case TOKEN_p1:
 		TAG(p1) = cast_ret(brute_eval_double,v);
@@ -135,7 +135,7 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
 		TAG(p3) = cast_ret(brute_eval_double,v);
 		break;
 	case TOKEN_tos:
-		TAG(tos)= cast_ret(brute_eval_atom,v);	
+		TAG(tos)= cast_ret(brute_eval_atom,v);
 		break;
 	case TOKEN_ttl:
 		TAG(ttl)= cast_ret(brute_eval_atom,v);
@@ -154,12 +154,12 @@ u_parser(int t, struct atom *v, cmdline_t *cmd )
 		break;
 	case TOKEN_daddr:
 		TAG(daddr)= cast_ret(brute_eval_host,v);
-		break;	
+		break;
 	case TOKEN_sport:
 		TAG(sport)= cast_ret(brute_eval_atom,v);
 		break;
 	case TOKEN_dport:
-		TAG(dport)= cast_ret(brute_eval_atom,v); 
+		TAG(dport)= cast_ret(brute_eval_atom,v);
 		break;
         default:
 		PARSER_ERROR(v);
@@ -204,9 +204,9 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 	arena2 = (frame_t *)brute_realloc_frame(arena2);
 	arena3 = (frame_t *)brute_realloc_frame(arena3);
 
-	brute_build_mac(arena1,&global.ethh); 				// global ethernet option 
-	brute_build_mac(arena2,&global.ethh); 				// global ethernet option 
-	brute_build_mac(arena3,&global.ethh); 				// global ethernet option 
+	brute_build_mac(arena1,&global.ethh); 				// global ethernet option
+	brute_build_mac(arena2,&global.ethh); 				// global ethernet option
+	brute_build_mac(arena3,&global.ethh); 				// global ethernet option
 
 	brute_build_ip  (arena1,					// frame pointer
 			   p->len1,					// frame length
@@ -256,21 +256,21 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 			  p->dport,					// destination port
 			  p->len1-sizeof(struct ethhdr)	\
 				-sizeof(struct iphdr)	\
-				-sizeof(uint32_t),				// eth crc 
+				-sizeof(uint32_t),				// eth crc
 			 0);						// udp checksum not needed
 	brute_build_udp(arena2,
 			  p->sport,					// source port
 			  p->dport,					// destination port
 			  p->len2-sizeof(struct ethhdr)	\
 				-sizeof(struct iphdr)	\
-				-sizeof(uint32_t),				// eth crc 
+				-sizeof(uint32_t),				// eth crc
 			 0);						// udp checksum not needed
 	brute_build_udp(arena3,
 			  p->sport,					// source port
 			  p->dport,					// destination port
 			  p->len3-sizeof(struct ethhdr)	\
 				-sizeof(struct iphdr)	\
-				-sizeof(uint32_t),				// eth crc 
+				-sizeof(uint32_t),				// eth crc
 			 0);						// udp checksum not needed
 
 
@@ -281,10 +281,10 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 	brute_udpdata_rfc2544(arena3);
 
 	/*** calc the correct number of bytes to pass to sendto() ***/
-	bytes1 = brute_framelen_to_bytes(p->len1);	
-	bytes2 = brute_framelen_to_bytes(p->len2);	
-	bytes3 = brute_framelen_to_bytes(p->len3);	
-	
+	bytes1 = brute_framelen_to_bytes(p->len1);
+	bytes2 = brute_framelen_to_bytes(p->len2);
+	bytes3 = brute_framelen_to_bytes(p->len3);
+
 	/*** according to the rate requested, determine the interdeparture-time of packets.
              Both inter_time and HZ are expressed in time step counters (cycles_t) ***/
 
@@ -312,7 +312,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
 			arena = arena3;
 			bytes = bytes3;
-		}	
+		}
 
 		if( brute_sendto(global.sout_fd, arena, bytes, 0) == -1 )
 			continue;
@@ -328,7 +328,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
 		/* increment ts */
 		ts += inter_time;
-	}       
+	}
 
 	/*** reenable paging ***/
 	munlockall();
@@ -336,7 +336,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 	/*** print banner ***/
 	{
 		unsigned long long sent = global._sent-global._start;			/* packet sent */
-		unsigned long long req  = (unsigned long long)p->rate*p->msec/1000;	/* packet to be sent */	
+		unsigned long long req  = (unsigned long long)p->rate*p->msec/1000;	/* packet to be sent */
 		unsigned long long arate= (unsigned long long)sent*1000/p->msec;	/* average rate */
 		double jitter	= (double)sent/req*100-100;				/* variation percentage */
 

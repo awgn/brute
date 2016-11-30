@@ -1,10 +1,10 @@
 /*
     $Id: proc-parser.c,v 1.6 2008-01-12 16:10:23 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -43,7 +43,7 @@ static
 const char cpu_MHz[]="cpu MHz";
 
 #define check_clock_consistency(a,b)    \
-        (unsigned long long)(a)/1000000 == (unsigned long long)(b)/1000000 
+        (unsigned long long)(a)/1000000 == (unsigned long long)(b)/1000000
 
 unsigned long long
 get_cpu_hz(int n)
@@ -74,8 +74,8 @@ get_cpu_hz(int n)
     if (n == 0)
         return Hz;
 
-    /* 
-     * fine clock estimation 
+    /*
+     * fine clock estimation
      */
 
     gettimeofday(&g1,NULL);

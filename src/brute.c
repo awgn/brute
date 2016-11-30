@@ -51,10 +51,10 @@
 #include <hw_checksum.h>
 #include <getopt.h>
 
-_unused static 
+_unused static
 const char cvsid[]= "$Id: brute.c,v 1.35 2008-05-19 19:47:07 awgn Exp $";
 
-static 
+static
 const char license[]="\n\
 Copyright (c) 2003-2007 Nicola Bonelli <bonelli@antifork.org>.\n\
 This program is distributed in the hope that it will be useful,\n\
@@ -173,7 +173,7 @@ sanity_checks()
         fatal(MSG_FATAL "outgoing interface not given");
 
     if ((opt.rand_mac_dst|opt.rand_mac_src) && opt.pf_inet)
-        fatal(MSG_FATAL "randon mac and pf-inet socket are mutually exclusive"); 
+        fatal(MSG_FATAL "randon mac and pf-inet socket are mutually exclusive");
 
     if (Hz != 0 &&  estimate_clock_time != 0 )
         fatal(MSG_FATAL "use-clock and estimate-pps are mutually exclusive");
@@ -185,7 +185,7 @@ sanity_checks()
     if ( opt.eui64 )
         fatal(MSG_FATAL "eui64 option is not ipv4 compliant");
 
-    if ( opt.rand_host_src < -1 || opt.rand_host_src > 32 )	
+    if ( opt.rand_host_src < -1 || opt.rand_host_src > 32 )
         fatal(MSG_FATAL "ipv4: netmask src address (-q) is limited to 32bit");
 
     if ( opt.rand_host_dst < -1 || opt.rand_host_dst > 32 )
@@ -203,10 +203,10 @@ ipv6:
 }
 
 
-/* 
- * fprintf may lead to some context switching, responsible to cause spikes in flows. 
- * To avoid this snag fprintf is wrapped with the following function at runtime.  
- */  
+/*
+ * fprintf may lead to some context switching, responsible to cause spikes in flows.
+ * To avoid this snag fprintf is wrapped with the following function at runtime.
+ */
 
 static int null(FILE *stream,const char *format, ...) __attribute__ ((format (printf, 2, 3)));
 static int
@@ -226,7 +226,7 @@ main(int argc, char **argv)
     struct ethtool_drvinfo *info;
     struct sigaction siga;
     struct rlimit core;
-    unsigned long long mask;	
+    unsigned long long mask;
     int i;
 
     setup_hashtable(&command_table, &head_commands);
@@ -331,7 +331,7 @@ main(int argc, char **argv)
             brute_sendto = brute_vsendto_pf_packet;
             break;
         case 'A':
-            opt.eui64=1;	
+            opt.eui64=1;
             break;
         case 'E':
             estimate_clock_time = atoi(optarg);
@@ -425,7 +425,7 @@ main(int argc, char **argv)
 
     if ( opt.rand_host_src >= 0 || opt.rand_host_dst >=0 || opt.eui64 ) {
 
-        if (af_family == AF_INET6) 
+        if (af_family == AF_INET6)
             update_host = ( opt.eui64 ? _update_host6_eui64 : _update_host6 );
         else
             update_host = _update_host4;
@@ -440,7 +440,7 @@ main(int argc, char **argv)
         Hz = get_cpu_hz(estimate_clock_time);
     }
 
-    msg(MSG_INFO "cpu MHz: %lld.%.6lld %s\n", Hz / 1000000, Hz % 1000000, 	
+    msg(MSG_INFO "cpu MHz: %lld.%.6lld %s\n", Hz / 1000000, Hz % 1000000,
         opt.use_clock ? "(given)" : (estimate_clock_time ? "(estimated)": "(/proc/cpuinfo)" ) );
 
 
@@ -462,8 +462,8 @@ main(int argc, char **argv)
     if (crono_vector == NULL)
         fatal("malloc(): crono_vector");
 
-    msg( MSG_NULL "crono_vector_depth=%d bit (%d entries%s\n", crono_vector_depth, crono_vector_size, 
-         ( crono_vector_depth == 1 ?  " default)" : ")" ));	
+    msg( MSG_NULL "crono_vector_depth=%d bit (%d entries%s\n", crono_vector_depth, crono_vector_size,
+         ( crono_vector_depth == 1 ?  " default)" : ")" ));
 
     /* parsing filedat */
 
@@ -491,7 +491,7 @@ main(int argc, char **argv)
 
     if (opt.priority && opt.non_int) {
         int n = 9;
-        for(; n > -1; n--, sleep(1)) 
+        for(; n > -1; n--, sleep(1))
             msg(MSG_INFO "WARNING: non-interrupt mode requested! Brute will start in %d second%c",n, n>0 ? '\r' : '\n');
     }
 
@@ -520,4 +520,4 @@ main(int argc, char **argv)
     processor();
 
     return 0;
-}	
+}

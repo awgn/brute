@@ -42,7 +42,7 @@ sum(vargs_t * vt)
 
 
 /*
- * given the udp-data length, it returns the 
+ * given the udp-data length, it returns the
  * frame lenght
  */
 static int

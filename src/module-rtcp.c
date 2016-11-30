@@ -1,9 +1,9 @@
 /*
     $Id: module-rtcp.c,v 1.23 2008-01-12 16:10:22 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -63,20 +63,20 @@ struct mod_line {
 #define TOKEN_flow      6
 #define TOKEN_hoplim    7
 
-#define TOKEN_saddr     8       
-#define TOKEN_sport     9       
-#define TOKEN_daddr     10      
-#define TOKEN_dport     11      
+#define TOKEN_saddr     8
+#define TOKEN_sport     9
+#define TOKEN_daddr     10
+#define TOKEN_dport     11
 
 
 /*
  * module descriptor
  */
-static 
+static
 struct module_descriptor module = {
 h_engine:       u_engine,
                 h_parser:       u_parser,
-                command:        "rtcp",                                          
+                command:        "rtcp",
                 author:         "Bonelli Nicola <bonelli@netserv.iet.unipi.it>",
                 token_nelm:     12,
                 token_list:     { TOKEN(msec), TOKEN(rate),TOKEN(len),TOKEN(tos),TOKEN(ttl),
@@ -191,7 +191,7 @@ typedef struct {
     uint32_t count:5;     /* varies by packet type */
     uint32_t p:1;         /* padding flag */
     uint32_t version:2;   /* protocol version */
-#endif 
+#endif
     uint32_t pt:8;        /* RTCP packet type */
     uint32_t16 length;           /* pkt len in words, w/o this word */
 } rtcp_common_t;
@@ -272,8 +272,8 @@ typedef struct {
 
 
 
-/* 
- * timeval util 
+/*
+ * timeval util
  */
 
 static int
@@ -290,12 +290,12 @@ timeval_add(struct timeval *now, int usec)
     struct timeval ret;
 
     ret.tv_sec = now->tv_sec + (now->tv_usec + usec)/1000000;
-    ret.tv_usec= (now->tv_usec + usec)%1000000; 
+    ret.tv_usec= (now->tv_usec + usec)%1000000;
     return (ret);
 }
 
 /*
- * low-pass filter 
+ * low-pass filter
  */
 static int
 lp_filter(int xn)
@@ -358,7 +358,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     arena = (frame_t *)brute_realloc_frame(arena);
 
 
-    brute_build_mac(arena,&global.ethh); 				// global ethernet option 
+    brute_build_mac(arena,&global.ethh); 				// global ethernet option
 
     brute_build_ip  (arena,                                         // frame pointer
                      p->len,                                      // frame length
@@ -380,7 +380,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
                     p->dport,					// destination port
                     p->len-sizeof(struct ethhdr)	\
                     -sizeof(struct iphdr)	\
-                    -sizeof(uint32_t),				// eth crc 
+                    -sizeof(uint32_t),				// eth crc
                     0);						// udp checksum not needed
 
     /*** build the udp_data according to rfc2544 frame format ***/
@@ -410,7 +410,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     ASSERT(p->rate > 0);
 
     /*** calc the correct number of bytes to pass to sendto() ***/
-    bytes = brute_framelen_to_bytes(p->len);	
+    bytes = brute_framelen_to_bytes(p->len);
 
     /*** according to the rate requested, determine the interdeparture-time of packets.
       Both inter_time and HZ are expressed in time step counters (cycles_t) ***/
@@ -439,7 +439,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
                       sizeof(struct udphdr)+
                       sizeof(rtcp_common_t));
 
-        /* send rtcp packet */	
+        /* send rtcp packet */
         if( brute_sendto(global.sout_fd, arena, bytes, 0) == -1 )
             continue;
 
@@ -477,7 +477,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
 
         /* increment ts */
         ts += inter_time;
-    }       
+    }
 
     /*** reenable paging ***/
     munlockall();
@@ -485,7 +485,7 @@ u_engine(cycles_t *exit_time,cmdline_t *cmd)
     /*** print banner ***/
     {
         unsigned long long sent = global._sent-global._start;                     /* packet sent */
-        unsigned long long req  = (unsigned long long)p->rate*p->msec/1000;     /* packet to be sent */ 
+        unsigned long long req  = (unsigned long long)p->rate*p->msec/1000;     /* packet to be sent */
         unsigned long long arate= (unsigned long long)sent*1000/p->msec;        /* average rate */
         double jitter   = (double)sent/req*100-100;                             /* variation percentage */
 

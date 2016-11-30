@@ -1,10 +1,10 @@
 /*
     $Id: macro.h,v 1.18 2008-01-12 16:10:19 awgn Exp $
- 
+
     Copyright (c) 2003 Nicola Bonelli <bonelli@antifork.org>
                                        <bonelli@netserv.iet.unipi.it>
- 
- 
+
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -40,9 +40,9 @@ char *_p; \
 } while(0)
 
 
-/* 
- * finite state machine helper 
- */ 
+/*
+ * finite state machine helper
+ */
 #define state_$(cond,jmp_a,action,jmp_r, reaction) \
 if (cond) { \
 	state=jmp_a; \
@@ -52,13 +52,13 @@ if (cond) { \
 	reaction; \
 }
 
-/* 
+/*
  * is a good token?
  */
 #define isgtoken(x)	(isalnum(x)||x=='_')
 
 /*
- * common attributes 
+ * common attributes
  */
 #ifndef _unused
 #define _unused        __attribute__((unused))
@@ -76,7 +76,7 @@ if (cond) { \
 #define MAX_OBJ         	1024
 #define PARSE_BUFFLEN   	1024
 #define CPUBUFF         	1024
-	
+
 /* checksum */
 #define CHKSUM_HW	0
 #define CHKSUM_SW	1
@@ -87,10 +87,10 @@ if (cond) { \
 #define PECOMM		2
 #define PETOK		3
 #define PEITOK		4
-#define	PETOOFEW	5	
+#define	PETOOFEW	5
 
 /* commands and tokens limit */
-#define MAX_COMMAND     256      
-#define MAX_TOKEN       256     
+#define MAX_COMMAND     256
+#define MAX_TOKEN       256
 
 #endif /* MACRO_H */
